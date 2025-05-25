@@ -67,7 +67,6 @@ Thumbs.db
 # 项目特定文件
 # 注意: keys/ 和 output/ 目录通常也应该被忽略，因为它们包含运行时生成的文件
 keys/
-output/
 
 # 临时文件
 *.tmp
