@@ -261,9 +261,8 @@ class ImageDecryption:
                 decrypted_channel = self.decrypt(channel)
                 decrypted_channels.append(decrypted_channel)
             return cv2.merge(decrypted_channels)
-        
-        # 读取初始值
-        sequences = np.load('sequences.npz')
+          # 读取密钥序列
+        sequences = np.load('keys/sequences.npz')
         x_seq = sequences['x_seq']
         y_seq = sequences['y_seq']
         z_seq = sequences['z_seq']
@@ -280,20 +279,28 @@ def main():
     """测试程序"""
     try:
         # 读取加密图像
-        encrypted_img = cv2.imread('encrypted.png', cv2.IMREAD_GRAYSCALE)
+        encrypted_img = cv2.imread('output/encrypted.png', cv2.IMREAD_GRAYSCALE)
         if encrypted_img is None:
-            raise FileNotFoundError("加密图像文件未找到")
+            raise FileNotFoundError("加密图像文件未找到，请先运行加密程序")
+
+        # 检查密钥文件是否存在
+        import os
+        if not os.path.exists('keys/sequences.npz'):
+            raise FileNotFoundError("密钥文件未找到，请先运行加密程序生成密钥")
+
+        # 创建输出目录
+        os.makedirs("output", exist_ok=True)
 
         # 解密图像
         decryptor = ImageDecryption()
         decrypted = decryptor.decrypt(encrypted_img)
 
-        # 保存结果
-        cv2.imwrite('decrypted.png', decrypted)
-        print("解密完成")
+        # 保存结果到output目录
+        cv2.imwrite('output/decrypted.png', decrypted)
+        print("🔓 解密完成！文件已保存到 output/decrypted.png")
 
     except Exception as e:
-        print(f"出现错误: {e}")
+        print(f"❌ 出现错误: {e}")
 
 if __name__ == "__main__":
     main()

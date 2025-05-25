@@ -160,9 +160,10 @@ class ImageEncryption:
         x0 = self.base_x + ((xor_sum(hash_nums[:8]) + mean_val) % 256) / 256
         y0 = self.base_y + ((xor_sum(hash_nums[8:16]) + mean_val) % 256) / 256
         z0 = self.base_z + ((xor_sum(hash_nums[16:24]) + mean_val) % 256) / 256
-        
-        # 将初始值记录到文件中
-        with open("initial_values.txt", "w") as f:
+          # 将初始值记录到keys目录中
+        import os
+        os.makedirs("keys", exist_ok=True)
+        with open("keys/initial_values.txt", "w") as f:
             f.write(f"x0: {x0}\n")
             f.write(f"y0: {y0}\n")
             f.write(f"z0: {z0}\n")
@@ -299,10 +300,10 @@ class ImageEncryption:
         
         x_seq = nn_scramble.train(x_seq)
         y_seq = nn_scramble.train(y_seq)
-        z_seq = nn_diffuse.train(diffuse_seq[:, 2])
-
-        # 将序列保存到文件中
-        np.savez('sequences.npz', x_seq=x_seq, y_seq=y_seq, z_seq=z_seq)
+        z_seq = nn_diffuse.train(diffuse_seq[:, 2])        # 将序列保存到keys目录中
+        import os
+        os.makedirs("keys", exist_ok=True)
+        np.savez('keys/sequences.npz', x_seq=x_seq, y_seq=y_seq, z_seq=z_seq)
         
         # 置乱和扩散
         scrambled = self.scramble_image(image, x_seq, y_seq)
@@ -318,25 +319,29 @@ def main():
         if img is None:
             raise FileNotFoundError("图像文件未找到")
 
+        # 创建输出目录
+        import os
+        os.makedirs("output", exist_ok=True)
+        os.makedirs("keys", exist_ok=True)
+
         # 加密图像
         encryptor = ImageEncryption()
         encrypted = encryptor.encrypt(img)
 
-        # 保存结果
-        cv2.imwrite('encrypted.png', encrypted)
-        print("加密完成")
+        # 保存结果到output目录
+        cv2.imwrite('output/encrypted.png', encrypted)
+        print("🔐 加密完成！文件已保存到 output/encrypted.png")
 
         # 计算一些评价指标
         original_hist = cv2.calcHist([img], [0], None, [256], [0, 256])
         encrypted_hist = cv2.calcHist([encrypted], [0], None, [256], [0, 256])
         
-        print("原始图像熵:", -np.sum((original_hist/img.size) * 
-              np.log2(original_hist/img.size + 1e-10)))
-        print("加密图像熵:", -np.sum((encrypted_hist/img.size) * 
-              np.log2(encrypted_hist/img.size + 1e-10)))
+        print("📊 原始图像熵:", f"{-np.sum((original_hist/img.size) * np.log2(original_hist/img.size + 1e-10)):.4f}")
+        print("📊 加密图像熵:", f"{-np.sum((encrypted_hist/img.size) * np.log2(encrypted_hist/img.size + 1e-10)):.4f}")
+        print("🔑 密钥文件已保存到 keys/ 目录")
 
     except Exception as e:
-        print(f"出现错误: {e}")
+        print(f"❌ 出现错误: {e}")
 
 if __name__ == "__main__":
     main()
