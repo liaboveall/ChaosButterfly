@@ -115,7 +115,7 @@ graph LR
 
 | 原始图像 | 加密图像 | 解密图像 |
 |----------|----------|----------|
-| ![原图](lena.png) | ![加密](output/encrypted.png) | ![解密](output/decrypted.png) |
+| ![原图](lena.png) | ![加密](images/encrypted.png) | ![解密](images/decrypted.png) |
 
 ## 🔬 技术细节
 
