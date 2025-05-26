@@ -1,6 +1,6 @@
-# 🦋 ChaosButterfly - 基于神经网络优化混沌系统的图像加密器
+# 🔐 ChaosNet-IE - 基于神经网络优化混沌系统的图像加密器
 
-> "像蝴蝶扇动翅膀引发风暴一样，微小的密钥变化能让图像面目全非" 🌪️
+> "Neural Network Enhanced Chaotic Image Encryption - 先进的混沌神经网络图像加密系统" 🔬
 
 ![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)
 ![OpenCV](https://img.shields.io/badge/OpenCV-4.0+-green.svg)
@@ -9,7 +9,7 @@
 
 ## 🎯 项目简介
 
-**ChaosButterfly** 是一个基于改进Lorenz混沌系统和神经网络的高安全性图像加密解决方案。本项目实现了论文 [《基于神经网络优化混沌系统的图像加密算法》](https://www.c-s-a.org.cn/1003-3254/7578.html) 中提出的创新算法。
+**ChaosNet-IE** 是一个基于改进Lorenz混沌系统和神经网络的高安全性图像加密解决方案。本项目实现了论文 [《基于神经网络优化混沌系统的图像加密算法》](https://www.c-s-a.org.cn/1003-3254/7578.html) 中提出的创新算法。
 
 ### ✨ 核心特性
 
@@ -22,7 +22,7 @@
 ## 🏗️ 项目结构
 
 ```
-ChaosButterfly/
+ChaosNet-IE/
 ├── 📁 keys/              # 密钥文件存储目录
 │   ├── sequences.npz     # 神经网络训练后的混沌序列
 │   └── initial_values.txt # Lorenz系统初始值
